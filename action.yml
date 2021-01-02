@@ -2,10 +2,26 @@ name: 'Your name here'
 description: 'Provide a description here'
 author: 'Your name or organization here'
 inputs:
-  milliseconds: # change this
-    required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  github-token:
+    required: false
+    description: 'The GITHUB_TOKEN secret'
+  configuration-path:
+    description: 'The path for the configurations'
+    default: '.github/issue-comment-validates.yml'
+    required: false
+  debug:
+    description: 'The debug mode flag'
+    default: 'false'
+    required: false
+  issue-repo-owner:
+    required: false
+    description: 'The issue repo owner'
+  issue-repo-name:
+    required: false
+    description: 'The issue repo name'
+  issue-number:
+    required: false
+    description: 'The issue number'
 runs:
   using: 'node12'
   main: 'dist/index.js'
