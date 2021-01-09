@@ -64,7 +64,7 @@ function run() {
                 core.debug(`key:${key}, value:${result[key]}`);
                 core.setOutput(key, result[key]);
             }
-            core.debug('===============');
+            core.debug('==================');
         }
         catch (error) {
             core.setFailed(error.message);
@@ -80,8 +80,8 @@ function check(client, checkItems, comments) {
                 core.debug(`already checked true. key:${item.key}`);
                 continue;
             }
-            if (item.body && item.body !== comment.body) {
-                core.debug(`body is invalid. key: ${item.key}, expected: ${item.body}, got: ${comment.body}.`);
+            if (item.bodies && item.bodies.includes(comment.body) === false) {
+                core.debug(`body is invalid. key: ${item.key}, expected: ${item.bodies}, got: ${comment.body}.`);
                 continue;
             }
             if (item.users && item.users.includes(comment.user.login) === false) {
@@ -163,8 +163,8 @@ function getCheckItems(client, configurationPath, debug) {
         const result = [];
         for (const v of config.validates) {
             const checkItem = { key: v.key };
-            if (v.body) {
-                checkItem.body = v.body;
+            if (v.bodies) {
+                checkItem.bodies = v.bodies;
             }
             if (v.users) {
                 checkItem.users = v.users;
