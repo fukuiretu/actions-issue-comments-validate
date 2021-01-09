@@ -2,102 +2,80 @@
   <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
 </p>
 
-# Create a JavaScript Action using TypeScript
+# Issue Comments Validator
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+Checks the validity of comments associated with an issue and returns true or false.
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+## Usage
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+### Create `.github/issue-comments-validate.yml`
+Check the validity of the comments in the issue based on this file.
 
-## Create an action from this template
+#### Property
+##### key (String)
+The key of the item to be checked. The value is optional, but should be unique.
 
-Click the `Use this Template` and provide the new repo details for your action
+##### bodies (Array)
+If any of the comments associated with the target issue match any of the specified values, the result is returned as true.
 
-## Code in Main
+##### users (Array)
+If the user who made the comment associated with the target issue has at least one matching value specified, the result is returned as true.
 
-Install the dependencies  
-```bash
-$ npm install
+##### userTeams (Array)
+Return the result as true if any of the users who commented on the target issue have a specified value that matches one of the users who belong to the team.
+
+#### Examples
+
+```yml
+validates:
+  - key: check1
+    bodies:
+      - "@github-actions approved!!"
+      - "@github-actions LGTM"
+    users:
+      - fukuiretu
+  - key: check2
+    bodies:
+      - "@github-actions nice!!"
+    userTeams:
+      - org: hoge
+        team_slug: pjms
 ```
 
-Build the typescript and package it for distribution
-```bash
-$ npm run build && npm run package
+### Create Workflow
+
+```yml
+name: 'issue-comments-validate'
+on:
+  issue_comment:
+    types:
+      - created
+      - edited
+
+jobs:
+  check:
+    steps:
+      - id: step1
+        uses: fukuiretu/actions-issue-comment-validates@main
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - id: step2
+        run: |
+          echo "check1 result: ${{ steps.step1.outputs.check1 }}"
+          echo "check2 result: ${{ steps.step1.outputs.check2 }}"
 ```
 
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
+_Note: This grants access to the `GITHUB_TOKEN` so the action can make calls to GitHub's rest API_
 
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
+#### Inputs
 
-...
-```
+Various inputs are defined in [`action.yml`](action.yml) to let you configure the labeler:
 
-## Change action.yml
-
-The action.yml contains defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
-
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
-```bash
-$ npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
-
-```yaml
-uses: ./
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+| Name | Description | Default |
+| - | - | - |
+| `repo-token` | The GITHUB_TOKEN secret | N/A |
+| `configuration-path` | The path to the label configuration file | `.github/issue-comments-validate.yml` |
+| `debug` | If set to true, it will start as debug mode | `false`
+| `issue-repo-owner` | Owner of the target issue, required if you want to directly specify the issue you want to check. | N/A
+| `issue-repo-name:` | The repo name of the target issue, required if you want to directly specify the issue to be checked. | N/A
+| `issue-number:` | The number of the target issue, required if you want to directly specify the issue to be checked. | N/A

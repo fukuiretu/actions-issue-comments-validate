@@ -7,7 +7,7 @@ inputs:
     description: 'The GITHUB_TOKEN secret'
   configuration-path:
     description: 'The path for the configurations'
-    default: '.github/issue-comment-validates.yml'
+    default: '.github/issue-comments-validate.yml'
     required: false
   debug:
     description: 'The debug mode flag'
