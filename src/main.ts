@@ -53,7 +53,7 @@ function check(
 
     for (const item of checkItems) {
       core.debug(`check item:${item}`)
-      
+
       if (result[item.key] === true) {
         core.debug(`already checked true. key:${item.key}`)
         continue

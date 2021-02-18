@@ -75,7 +75,9 @@ function check(client, checkItems, comments) {
     core.debug('check start...');
     const result = {};
     for (const comment of comments) {
+        core.debug(`comment:${comment}`);
         for (const item of checkItems) {
+            core.debug(`check item:${item}`);
             if (result[item.key] === true) {
                 core.debug(`already checked true. key:${item.key}`);
                 continue;
@@ -90,6 +92,7 @@ function check(client, checkItems, comments) {
             }
             core.debug(`check valid. key: ${item.key}`);
             result[item.key] = true;
+            break;
         }
     }
     for (const item of checkItems) {
