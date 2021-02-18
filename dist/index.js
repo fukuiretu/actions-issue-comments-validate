@@ -75,9 +75,9 @@ function check(client, checkItems, comments) {
     core.debug('check start...');
     const result = {};
     for (const comment of comments) {
-        core.debug(`comment:${comment}`);
+        core.debug(`comment:${JSON.stringify(comment)}`);
         for (const item of checkItems) {
-            core.debug(`check item:${item}`);
+            core.debug(`check item:${JSON.stringify(item)}`);
             if (result[item.key] === true) {
                 core.debug(`already checked true. key:${item.key}`);
                 continue;
@@ -198,8 +198,7 @@ function fetchContent(client, repoPath) {
         const response = yield client.repos.getContent({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
-            path: repoPath,
-            ref: github.context.sha
+            path: repoPath
         });
         return Buffer.from(response.data.content, response.data.encoding).toString();
     });

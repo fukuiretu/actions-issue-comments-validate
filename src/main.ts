@@ -49,10 +49,10 @@ function check(
   const result: {[key: string]: boolean} = {}
 
   for (const comment of comments) {
-    core.debug(`comment:${comment}`)
+    core.debug(`comment:${JSON.stringify(comment)}`)
 
     for (const item of checkItems) {
-      core.debug(`check item:${item}`)
+      core.debug(`check item:${JSON.stringify(item)}`)
 
       if (result[item.key] === true) {
         core.debug(`already checked true. key:${item.key}`)
