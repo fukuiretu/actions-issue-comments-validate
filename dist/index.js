@@ -72,7 +72,7 @@ function run() {
     });
 }
 function check(client, checkItems, comments) {
-    core.debug('check start...');
+    core.debug('check start...!!!');
     const result = {};
     for (const comment of comments) {
         core.debug(`comment:${JSON.stringify(comment)}`);
@@ -82,7 +82,8 @@ function check(client, checkItems, comments) {
                 core.debug(`already checked true. key:${item.key}`);
                 continue;
             }
-            if (item.bodies && item.bodies.includes(comment.body) === false) {
+            core.debug('comment check start');
+            if (item.bodies && util_1.checkComment(comment.body, item) === false) {
                 core.debug(`body is invalid. key: ${item.key}, expected: ${item.bodies}, got: ${comment.body}.`);
                 continue;
             }
@@ -142,7 +143,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getComments = exports.getCheckItems = void 0;
+exports.checkComment = exports.getComments = exports.getCheckItems = void 0;
 const core = __importStar(__webpack_require__(2186));
 const fs = __importStar(__webpack_require__(5747));
 const github = __importStar(__webpack_require__(5438));
@@ -225,6 +226,18 @@ function getComments(client, option) {
     });
 }
 exports.getComments = getComments;
+function checkComment(comment, item) {
+    core.debug(`checkComment来てます。`);
+    for (const checkStr of item.body) {
+        core.debug(`debug, key: ${item.key}, expected: ${checkStr}, got: ${comment}.`);
+        if (comment.includes(checkStr)) {
+            core.debug(`body is matched. key: ${item.key}, expected: ${checkStr}, got: ${comment}.`);
+            return true;
+        }
+    }
+    return false;
+}
+exports.checkComment = checkComment;
 
 
 /***/ }),
