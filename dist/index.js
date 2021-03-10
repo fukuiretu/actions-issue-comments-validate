@@ -228,7 +228,7 @@ function getComments(client, option) {
 exports.getComments = getComments;
 function checkComment(comment, item) {
     core.debug(`checkComment来てます。`);
-    for (const checkStr of item.body) {
+    for (const checkStr of item.bodies) {
         core.debug(`debug, key: ${item.key}, expected: ${checkStr}, got: ${comment}.`);
         if (comment.includes(checkStr)) {
             core.debug(`body is matched. key: ${item.key}, expected: ${checkStr}, got: ${comment}.`);
