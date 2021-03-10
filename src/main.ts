@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import {getComments, GetCommentOption, getCheckItems, CheckItem} from './util'
+import {getComments, GetCommentOption, getCheckItems, CheckItem, checkComment} from './util'
 
 async function run(): Promise<void> {
   try {
@@ -44,7 +44,7 @@ function check(
   checkItems: CheckItem[],
   comments: any
 ): {[key: string]: boolean} {
-  core.debug('check start...')
+  core.debug('check start...!!!')
 
   const result: {[key: string]: boolean} = {}
 
@@ -59,7 +59,9 @@ function check(
         continue
       }
 
-      if (item.bodies && item.bodies.includes(comment.body) === false) {
+      core.debug('comment check start')
+
+      if (item.bodies && checkComment(comment.body, item)  === false) {
         core.debug(
           `body is invalid. key: ${item.key}, expected: ${item.bodies}, got: ${comment.body}.`
         )
