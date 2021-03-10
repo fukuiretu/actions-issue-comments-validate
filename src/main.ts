@@ -58,8 +58,11 @@ function check(
         core.debug(`already checked true. key:${item.key}`)
         continue
       }
-
-      if (item.bodies && item.bodies.includes(comment.body) === false) {
+      if (
+        item.bodies &&
+        item.bodies.some(checkBody => comment.body.includes(checkBody)) ===
+          false
+      ) {
         core.debug(
           `body is invalid. key: ${item.key}, expected: ${item.bodies}, got: ${comment.body}.`
         )
