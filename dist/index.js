@@ -72,7 +72,7 @@ function run() {
     });
 }
 function check(client, checkItems, comments) {
-    core.debug('check start...!!!');
+    core.debug('check start...');
     const result = {};
     for (const comment of comments) {
         core.debug(`comment:${JSON.stringify(comment)}`);
@@ -82,7 +82,6 @@ function check(client, checkItems, comments) {
                 core.debug(`already checked true. key:${item.key}`);
                 continue;
             }
-            core.debug('comment check start');
             if (item.bodies && util_1.checkComment(comment.body, item) === false) {
                 core.debug(`body is invalid. key: ${item.key}, expected: ${item.bodies}, got: ${comment.body}.`);
                 continue;
@@ -227,9 +226,7 @@ function getComments(client, option) {
 }
 exports.getComments = getComments;
 function checkComment(comment, item) {
-    core.debug(`checkComment来てます。`);
     for (const checkStr of item.bodies) {
-        core.debug(`debug, key: ${item.key}, expected: ${checkStr}, got: ${comment}.`);
         if (comment.includes(checkStr)) {
             core.debug(`body is matched. key: ${item.key}, expected: ${checkStr}, got: ${comment}.`);
             return true;

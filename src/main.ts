@@ -50,7 +50,7 @@ function check(
   checkItems: CheckItem[],
   comments: any
 ): {[key: string]: boolean} {
-  core.debug('check start...!!!')
+  core.debug('check start...')
 
   const result: {[key: string]: boolean} = {}
 
@@ -64,8 +64,6 @@ function check(
         core.debug(`already checked true. key:${item.key}`)
         continue
       }
-
-      core.debug('comment check start')
 
       if (item.bodies && checkComment(comment.body, item) === false) {
         core.debug(
