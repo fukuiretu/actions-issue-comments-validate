@@ -73,7 +73,8 @@ async function fetchContent(client: any, repoPath: string): Promise<string> {
   const response: any = await client.repos.getContent({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
-    path: repoPath
+    path: repoPath,
+    ref: github.context.sha
   })
 
   return Buffer.from(response.data.content, response.data.encoding).toString()
