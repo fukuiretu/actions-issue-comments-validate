@@ -200,7 +200,8 @@ function fetchContent(client, repoPath) {
         const response = yield client.repos.getContent({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
-            path: repoPath
+            path: repoPath,
+            ref: github.context.sha
         });
         return Buffer.from(response.data.content, response.data.encoding).toString();
     });
